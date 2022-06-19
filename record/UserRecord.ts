@@ -3,7 +3,7 @@ import {pool} from '../utils/db';
 import {UserError} from "./UserError";
 import {FieldPacket} from "mysql2";
 
-interface UserRecordEntity {
+export interface UserRecordEntity {
     id?: string;
     name: string;
     surname: string;
@@ -18,9 +18,9 @@ interface UserRecordEntity {
 
 type UserDataToValidateIsAlreadyExist = Pick<UserRecordEntity, 'name' | 'surname' | 'login'>;
 
-type UserRecordObject = Omit<UserRecordEntity, ''>;
+export type UserRecordObject = Omit<UserRecordEntity, ''>;
 
-type UserResults = [UserRecordObject[], FieldPacket[]];
+type UserResults = [UserRecordEntity[], FieldPacket[]];
 
 export class UserRecord implements UserRecordEntity {
 
