@@ -98,6 +98,28 @@ export class UserRecord implements UserRecordEntity {
         return userToReturn.length ? userToReturn[0] : null;
     }
 
+    static async getOneByLoginAndPassword(login: string, password: string): Promise<UserRecord | null> {
+        const [results] = await pool.execute("SELECT * FROM `users` where `login`=:login and `password`=:password", {
+            login,
+            password
+        }) as UserResults;
+
+        const userToReturn = results.map(user => new UserRecord({
+            id: user.id,
+            name: user.name,
+            surname: user.surname,
+            city: user.city,
+            address: user.address,
+            phone: user.phone,
+            email: user.email,
+            login: user.login,
+            is_admin: user.is_admin,
+            password: user.password
+        }))
+
+        return userToReturn.length ? userToReturn[0] : null;
+    }
+
     static async getAll(): Promise<UserRecord[] | null> {
         const [results] = await pool.execute("SELECT * FROM `users`") as UserResults;
 
