@@ -2,6 +2,7 @@ import * as express from 'express';
 import * as cors from 'cors';
 import {LoginRouter} from "./routes/LoginRouter";
 import {UserRouter} from "./routes/UserRouter";
+import {RegisterRouter} from "./routes/RegisterRouter";
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(cors({
 
 app.use('/login', LoginRouter);
 app.use('/user', UserRouter);
+app.use('/register', RegisterRouter);
 
 app.listen(3001 || process.env.PORT, () => {
     console.log('App is running on http://localhost:3001');
