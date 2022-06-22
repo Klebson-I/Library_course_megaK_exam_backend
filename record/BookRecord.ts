@@ -1,0 +1,57 @@
+import {BookEntity, BookGenre} from "../utils/types";
+import {v4 as uuid} from 'uuid';
+import {pool} from "../utils/db";
+
+export class BookRecord implements BookEntity {
+    id?: string;
+    title: string;
+    genre: BookGenre | null;
+    amount: number;
+    year: number | null;
+
+    constructor(obj: BookEntity) {
+        this.id = obj.id ?? uuid();
+        this.title = obj.title;
+        this.genre = obj.genre;
+        this.amount = obj.amount;
+        this.year = obj.year;
+    }
+
+    async insert(): Promise<void> {
+        try {
+            await pool.execute("INSERT INTO `books` VALUES(:id,:title,:genre,:amount,:year)", {
+                id: this.id,
+                title: this.title,
+                genre: this.genre,
+                amount: this.amount,
+                year: this.year
+            })
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    async update(id: string): Promise<void> {
+        try {
+            await pool.execute("UPDATE `books` SET `title`=:title,`genre`=:genre,`amount`=:amount,`year`=:year WHERE `id`=:id", {
+                id,
+                title: this.title,
+                genre: this.genre,
+                amount: this.amount,
+                year: this.year,
+            })
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    async delete(id: string): Promise<void> {
+        try {
+            await pool.execute("DELETE FROM `books` WHERE `id`=:id", {
+                id,
+            })
+        } catch (e) {
+            console.log(e);
+        }
+    }
+}

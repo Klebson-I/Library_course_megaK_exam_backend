@@ -1,5 +1,6 @@
-import {UserRecord, UserRecordEntity} from "../record/UserRecord";
+import {UserRecord} from "../record/UserRecord";
 import {v4 as uuid} from 'uuid';
+import {UserRecordEntity} from "./types";
 
 export const logInUser = async (login: string, password: string): Promise<boolean> => {
     try {

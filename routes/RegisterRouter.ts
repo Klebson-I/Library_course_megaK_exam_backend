@@ -1,7 +1,8 @@
 import {Request, Response, Router} from 'express';
 import {registerUser} from "../utils/usersActions";
-import {UserRecordEntity} from "../record/UserRecord";
+
 import {TokenRecord} from "../record/TokenRecord";
+import {UserRecordEntity} from "../utils/types";
 
 export const RegisterRouter = Router();
 

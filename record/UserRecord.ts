@@ -1,24 +1,11 @@
 import {v4 as uuid} from 'uuid';
 import {pool} from '../utils/db';
-import {UserError} from "./UserError";
+import {UserError} from "../Errors/UserError";
 import {FieldPacket} from "mysql2";
+import {UserRecordEntity} from "../utils/types";
 
-export interface UserRecordEntity {
-    id?: string;
-    name: string;
-    surname: string;
-    city: string;
-    address: string;
-    phone: number;
-    email: string;
-    is_admin: boolean;
-    login: string;
-    password: string;
-}
 
 type UserDataToValidateIsAlreadyExist = Pick<UserRecordEntity, 'name' | 'surname' | 'login' | 'password'>;
-
-export type UserRecordObject = Omit<UserRecordEntity, ''>;
 
 type UserResults = [UserRecordEntity[], FieldPacket[]];
 
@@ -36,7 +23,7 @@ export class UserRecord implements UserRecordEntity {
     password: string;
 
 
-    constructor(obj: UserRecordObject) {
+    constructor(obj: UserRecordEntity) {
         this.validateData(obj);
         this.validatePassword(obj.password);
         this.id = obj.id ?? uuid();
@@ -141,7 +128,7 @@ export class UserRecord implements UserRecordEntity {
         return userToReturn.length ? userToReturn : null;
     }
 
-    validateData({name, surname, city, address, phone, email}: UserRecordObject): void {
+    validateData({name, surname, city, address, phone, email}: UserRecordEntity): void {
         if (name.length < 2 || name.length > 50) {
             throw new UserError('Name should has 2 - 50 characters');
         }
@@ -176,20 +163,23 @@ export class UserRecord implements UserRecordEntity {
         }
     }
 
-    async insert() {
-        console.log("INSERTINGG");
-        await pool.execute("INSERT INTO `users` VALUES (:id,:name,:surname,:city,:address,:phone,:email,:is_admin,:login,:password)", {
-            id: this.id,
-            name: this.name,
-            surname: this.surname,
-            city: this.city,
-            address: this.address,
-            phone: this.phone,
-            email: this.email,
-            is_admin: this.is_admin,
-            login: this.login,
-            password: this.password
-        })
-        return this.id;
+    async insert(): Promise<string> {
+        try {
+            await pool.execute("INSERT INTO `users` VALUES (:id,:name,:surname,:city,:address,:phone,:email,:is_admin,:login,:password)", {
+                id: this.id,
+                name: this.name,
+                surname: this.surname,
+                city: this.city,
+                address: this.address,
+                phone: this.phone,
+                email: this.email,
+                is_admin: this.is_admin,
+                login: this.login,
+                password: this.password
+            })
+            return this.id;
+        } catch (e) {
+            console.log(e);
+        }
     }
 }
