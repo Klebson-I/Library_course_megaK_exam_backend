@@ -69,7 +69,7 @@ export class BookRecord implements BookEntity {
         }
     }
 
-    static async getOneByTitle(title: string): Promise<BookRecord[] | null> {
+    static async getByTitle(title: string): Promise<BookRecord[] | null> {
         const str = "'" + title + "%'";
         try {
             const [results] = await pool.execute("SELECT * FROM `books` where `title` LIKE" + str) as BookResults;

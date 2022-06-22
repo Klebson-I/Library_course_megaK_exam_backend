@@ -4,6 +4,7 @@ import {LoginRouter} from "./routes/LoginRouter";
 import {UserRouter} from "./routes/UserRouter";
 import {RegisterRouter} from "./routes/RegisterRouter";
 import {TokenRouter} from "./routes/TokenRouter";
+import {BookRouter} from "./routes/BookRouter";
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use('/login', LoginRouter);
 app.use('/user', UserRouter);
 app.use('/register', RegisterRouter);
 app.use('/token', TokenRouter);
+app.use('/book', BookRouter);
 
 app.listen(3001 || process.env.PORT, () => {
     console.log('App is running on http://localhost:3001');
