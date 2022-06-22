@@ -16,7 +16,7 @@ export interface UserRecordEntity {
     password: string;
 }
 
-type UserDataToValidateIsAlreadyExist = Pick<UserRecordEntity, 'name' | 'surname' | 'login'>;
+type UserDataToValidateIsAlreadyExist = Pick<UserRecordEntity, 'name' | 'surname' | 'login' | 'password'>;
 
 export type UserRecordObject = Omit<UserRecordEntity, ''>;
 
@@ -63,17 +63,19 @@ export class UserRecord implements UserRecordEntity {
                 name: user.name,
                 surname: user.surname,
                 login: user.login,
+                password: user.password
             }
         })
 
+        console.log(arrOfSimplifiedUsers);
+
         for (const user of arrOfSimplifiedUsers) {
             if (obj.login === user.login
-                && obj.name === user.name
-                && obj.surname === user.surname) {
+                && obj.password === user.password) {
                 isFound = true;
             }
         }
-
+        console.log(isFound);
         return isFound;
     }
 
@@ -167,7 +169,7 @@ export class UserRecord implements UserRecordEntity {
 
         let specialFound = arrFromPassword.some(sign => arrOfSpecialSigns.includes(sign));
 
-        let numberFound = arrFromPassword.some(sign => !Number.isNaN(sign));
+        let numberFound = arrFromPassword.some(sign => [1, 2, 3, 4, 5, 6, 7, 8, 9, 0].includes(Number(sign)));
 
         if (password.length < 8 || password.length > 50 || !specialFound || !numberFound) {
             throw new UserError('Password should consists of 8 - 50 characters, has at least one number and special sign');
@@ -175,6 +177,7 @@ export class UserRecord implements UserRecordEntity {
     }
 
     async insert() {
+        console.log("INSERTINGG");
         await pool.execute("INSERT INTO `users` VALUES (:id,:name,:surname,:city,:address,:phone,:email,:is_admin,:login,:password)", {
             id: this.id,
             name: this.name,

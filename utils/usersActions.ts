@@ -14,7 +14,8 @@ export const registerUser = async (obj: UserRecordEntity): Promise<boolean> => {
         const exist = await UserRecord.checkIsUserAlreadyExist({
             login: obj.login,
             surname: obj.surname,
-            name: obj.name
+            name: obj.name,
+            password: obj.password
         })
 
         if (!exist) {
