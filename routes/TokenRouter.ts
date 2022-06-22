@@ -5,6 +5,6 @@ export const TokenRouter = Router();
 
 TokenRouter
     .get('/', async (req: Request, res: Response) => {
-        const tokenObject = await createAdminToken();
+        const tokenObject = createAdminToken();
         res.json(tokenObject);
     })
