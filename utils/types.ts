@@ -50,3 +50,21 @@ export interface AuthorEntity {
     surname: string;
     book_id: string;
 }
+
+export interface HireEntity {
+    id?: string;
+    user_id: string;
+    book_id: string;
+    expire_date: Date;
+}
+
+export interface HireFullEntity {
+    id?: string;
+    user_id: string;
+    book_id: string;
+    expire_date: Date;
+    name: string;
+    surname: string;
+    email: string;
+    title: string;
+}
