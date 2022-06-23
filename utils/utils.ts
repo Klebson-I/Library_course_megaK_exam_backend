@@ -12,3 +12,8 @@ export const createActualDate = (): Date => {
     const date = new Date();
     return new Date(date.getFullYear(), date.getMonth(), date.getDate());
 }
+
+export const isExpire = (date: Date): boolean => {
+    const actual = createActualDate();
+    return date.getTime() - actual.getTime() < 0;
+}
