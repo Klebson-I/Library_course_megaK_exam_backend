@@ -20,7 +20,7 @@ export class BookRecord implements BookEntity {
         this.year = obj.year;
     }
 
-    async insert(): Promise<void> {
+    async insert(): Promise<string> {
         try {
             await pool.execute("INSERT INTO `books` VALUES(:id,:title,:genre,:amount,:year)", {
                 id: this.id,
@@ -29,6 +29,7 @@ export class BookRecord implements BookEntity {
                 amount: this.amount,
                 year: this.year
             })
+            return this.id;
         } catch (e) {
             console.log(e);
         }

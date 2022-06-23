@@ -44,3 +44,9 @@ export interface BookEntity {
     year: number | null;
 }
 
+export interface AuthorEntity {
+    id?: string;
+    name: string;
+    surname: string;
+    book_id: string;
+}
