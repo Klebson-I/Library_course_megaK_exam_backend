@@ -6,6 +6,7 @@ import {RegisterRouter} from "./routes/RegisterRouter";
 import {TokenRouter} from "./routes/TokenRouter";
 import {BookRouter} from "./routes/BookRouter";
 import {AuthorRouter} from "./routes/AuthorRouter";
+import {HireRouter} from "./routes/HireRouter";
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use('/register', RegisterRouter);
 app.use('/token', TokenRouter);
 app.use('/book', BookRouter);
 app.use('/author', AuthorRouter);
+app.use('/hire', HireRouter);
 
 
 app.listen(3001 || process.env.PORT, () => {
