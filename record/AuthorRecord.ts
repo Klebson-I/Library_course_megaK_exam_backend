@@ -38,6 +38,17 @@ export class AuthorRecord implements AuthorEntity {
         }
     }
 
+    static async getAllByBookId(id: string): Promise<AuthorRecord[] | null> {
+        try {
+            const [results] = await pool.execute("SELECT * FROM `authors` WHERE `book_id`=:id", {
+                id
+            }) as AuthorResults;
+            return results.length !== 0 ? results.map(author => new AuthorRecord(author)) : null;
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
     async insert(): Promise<string> {
         try {
             await pool.execute("INSERT INTO `authors` VALUES(:id,:name,:surname,:book_id)", {

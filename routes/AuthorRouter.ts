@@ -9,6 +9,6 @@ AuthorRouter
         res.json(authors);
     })
     .get('/:id', async (req: Request, res: Response) => {
-        const authors = await AuthorRecord.getOne(req.params.id);
+        const authors = await AuthorRecord.getAllByBookId(req.params.id);
         res.json(authors);
     })
