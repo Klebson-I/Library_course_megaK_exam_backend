@@ -8,14 +8,12 @@ type TokenResults = [TokenRecordEntity[], FieldPacket[]];
 
 export class TokenRecord implements TokenRecordEntity {
     id?: string;
-    token: string;
     login: string;
     password: string;
 
 
     constructor(obj: TokenRecordEntity) {
         this.id = obj.id ?? uuid();
-        this.token = obj.token;
         this.login = obj.login;
         this.password = obj.password;
     }
@@ -37,14 +35,14 @@ export class TokenRecord implements TokenRecordEntity {
         }
     }
 
-    async insert(): Promise<void> {
+    async insert(): Promise<string> {
         try {
-            await pool.execute("INSERT INTO `admintokens` VALUES(:id,:token,:login,:password)", {
+            await pool.execute("INSERT INTO `admintokens` VALUES(:id,:login,:password)", {
                 id: this.id,
-                token: this.token,
                 login: this.login,
                 password: this.password,
             });
+            return this.id;
         } catch (e) {
             console.log(e);
         }

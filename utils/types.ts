@@ -13,7 +13,6 @@ export interface UserRecordEntity {
 
 export interface TokenRecordEntity {
     id?: string;
-    token: string;
     login: string;
     password: string;
 }
