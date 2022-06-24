@@ -19,6 +19,29 @@ export class HireRecord implements HireEntity {
         this.expire_date = obj.expire_date;
     }
 
+    static async checkIfUserHaveBook(user_id: string, book_id: string): Promise<boolean> {
+        try {
+            const [results] = await pool.execute("SELECT * from `hires` WHERE `user_id`=:user_id AND `book_id`=:book_id", {
+                user_id,
+                book_id
+            }) as HireResults;
+            return results.length > 0;
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    static async getOne(id: string): Promise<null | HireRecord> {
+        try {
+            const [results] = await pool.execute("SELECT * from `hires` WHERE `id`=:id", {
+                id
+            }) as HireResults;
+            return results.length > 0 ? new HireRecord(results[0]) : null;
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
     static async getAll(): Promise<null | HireFullEntity[]> {
         try {
             const [results] = await pool.execute("SELECT `hires`.`id`, `hires`.`user_id`, `hires`.`book_id`,`hires`.`expire_date`,\n" +
@@ -54,4 +77,15 @@ export class HireRecord implements HireEntity {
             console.log(e);
         }
     }
+
+    async delete(): Promise<void> {
+        try {
+            await pool.execute("DELETE FROM `hires` WHERE `id`=:id", {
+                id: this.id,
+            })
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
 }
