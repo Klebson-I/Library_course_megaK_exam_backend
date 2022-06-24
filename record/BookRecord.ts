@@ -35,10 +35,10 @@ export class BookRecord implements BookEntity {
         }
     }
 
-    async update(id: string): Promise<void> {
+    async update(): Promise<void> {
         try {
             await pool.execute("UPDATE `books` SET `title`=:title,`genre`=:genre,`amount`=:amount,`year`=:year WHERE `id`=:id", {
-                id,
+                id: this.id,
                 title: this.title,
                 genre: this.genre,
                 amount: this.amount,
