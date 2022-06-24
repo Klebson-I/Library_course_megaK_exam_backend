@@ -40,8 +40,13 @@ HireRouter
     })
     .get('/:id', async (req: Request, res: Response) => {
         const hires = await HireRecord.getAll();
-        const userHires = hires.filter(hire => hire.user_id === req.params.id);
-        res.json(userHires);
+        if (hires) {
+            const userHires = hires.filter(hire => hire.user_id === req.params.id);
+            res.json(userHires);
+        } else {
+            res.json(null);
+        }
+
     })
     .get('/check/:user_id/:book_id', async (req: Request, res: Response) => {
         const haveBook = await HireRecord.checkIfUserHaveBook(req.params.user_id, req.params.book_id);
