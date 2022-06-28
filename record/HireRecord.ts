@@ -19,6 +19,30 @@ export class HireRecord implements HireEntity {
         this.expire_date = obj.expire_date;
     }
 
+    async insert(): Promise<string> {
+        try {
+            await pool.execute("INSERT INTO `hires` VALUES(:id,:user_id,:book_id,:expire_date)", {
+                id: this.id,
+                user_id: this.user_id,
+                book_id: this.book_id,
+                expire_date: this.expire_date
+            })
+            return this.id;
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    async delete(): Promise<void> {
+        try {
+            await pool.execute("DELETE FROM `hires` WHERE `id`=:id", {
+                id: this.id,
+            })
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
     static async checkIfUserHaveBook(user_id: string, book_id: string): Promise<boolean> {
         try {
             const [results] = await pool.execute("SELECT * from `hires` WHERE `user_id`=:user_id AND `book_id`=:book_id", {
@@ -59,30 +83,6 @@ export class HireRecord implements HireEntity {
                 email: hire.email,
                 title: hire.title
             })) : null;
-        } catch (e) {
-            console.log(e);
-        }
-    }
-
-    async insert(): Promise<string> {
-        try {
-            await pool.execute("INSERT INTO `hires` VALUES(:id,:user_id,:book_id,:expire_date)", {
-                id: this.id,
-                user_id: this.user_id,
-                book_id: this.book_id,
-                expire_date: this.expire_date
-            })
-            return this.id;
-        } catch (e) {
-            console.log(e);
-        }
-    }
-
-    async delete(): Promise<void> {
-        try {
-            await pool.execute("DELETE FROM `hires` WHERE `id`=:id", {
-                id: this.id,
-            })
         } catch (e) {
             console.log(e);
         }

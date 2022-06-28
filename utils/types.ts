@@ -67,3 +67,7 @@ export interface HireFullEntity {
     email: string;
     title: string;
 }
+
+export interface HireFullEntityWithDebt extends HireFullEntity {
+    debt: number;
+}

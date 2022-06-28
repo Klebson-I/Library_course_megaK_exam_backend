@@ -1,6 +1,7 @@
 import {Request, Response, Router} from 'express';
 import {changeBookAmount, evaluateDate} from "../utils/utils";
 import {HireRecord} from "../record/HireRecord";
+import {BookRecord} from "../record/BookRecord";
 
 export const HireRouter = Router();
 
@@ -55,7 +56,9 @@ HireRouter
     .delete('/:id', async (req: Request, res: Response) => {
         const hire = await HireRecord.getOne(req.params.id);
         if (hire) {
-            //@TODO add book amount +1 when someone gives it back
+            const book = await BookRecord.getOne(hire.book_id);
+            book.amount += 1;
+            await book.update();
             await hire.delete();
             res.json(true);
         } else {

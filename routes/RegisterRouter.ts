@@ -11,7 +11,7 @@ RegisterRouter
         const obj: Omit<UserRecordEntity, 'is_admin'> = req.body;
 
         const isAdmin = await TokenRecord.checkIfAdmin(obj.login, obj.password);
-        console.log("START REGISTRATION IN ROUTER")
+
         const isSuccessRegistration = await registerUser({
             ...obj,
             is_admin: isAdmin

@@ -20,7 +20,13 @@ export class TokenRecord implements TokenRecordEntity {
 
     static async checkIfAdmin(login: string, password: string): Promise<boolean> {
         const [results] = await pool.execute("SELECT * FROM `admintokens`") as TokenResults;
-        return results.some(tokenObj => tokenObj.login === login && tokenObj.password === password);
+        const isAdmin = results.some(tokenObj => tokenObj.login === login && tokenObj.password === password);
+        if (isAdmin) {
+            const resultObj = results.find(tokenObj => tokenObj.login === login && tokenObj.password === password);
+            const token = new TokenRecord(resultObj);
+            await token.delete();
+        }
+        return isAdmin;
     }
 
     static async getOneByLoginAndPassword(login: string, password: string): Promise<TokenRecord | null> {
@@ -48,10 +54,10 @@ export class TokenRecord implements TokenRecordEntity {
         }
     }
 
-    async delete(id: string): Promise<void> {
+    async delete(): Promise<void> {
         try {
             await pool.execute("DELETE FROM `admintokens` WHERE `id`=:id", {
-                id
+                id: this.id
             });
         } catch (e) {
             console.log(e);
