@@ -128,7 +128,12 @@ export class UserRecord implements UserRecordEntity {
         return userToReturn.length ? userToReturn : null;
     }
 
-    validateData({name, surname, city, address, phone, email}: UserRecordEntity): void {
+    validateData({name, surname, city, address, phone, email, login}: UserRecordEntity): void {
+
+        if (login.length < 5) {
+            throw new UserError('Login should has 5- 50 characters');
+        }
+
         if (name.length < 2 || name.length > 50) {
             throw new UserError('Name should has 2 - 50 characters');
         }
@@ -182,4 +187,25 @@ export class UserRecord implements UserRecordEntity {
             console.log(e);
         }
     }
+
+    async update(): Promise<string> {
+        try {
+            await pool.execute("UPDATE `users` SET `name`=:name,`surname`=:surname,`city`=:city,`address`=:address,`phone`=:phone,`email`=:email,`is_admin`=:is_admin,`login`=:login,`password`=:password where `id`=:id", {
+                id: this.id,
+                name: this.name,
+                surname: this.surname,
+                city: this.city,
+                address: this.address,
+                phone: this.phone,
+                email: this.email,
+                is_admin: this.is_admin,
+                login: this.login,
+                password: this.password
+            })
+            return this.id;
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
 }

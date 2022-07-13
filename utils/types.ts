@@ -43,6 +43,10 @@ export interface BookEntity {
     year: number | null;
 }
 
+export interface BookAndAuthorsObject extends BookEntity {
+    authors: string[];
+}
+
 export interface AuthorEntity {
     id?: string;
     name: string;

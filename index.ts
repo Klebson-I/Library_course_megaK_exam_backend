@@ -8,6 +8,7 @@ import {BookRouter} from "./routes/BookRouter";
 import {AuthorRouter} from "./routes/AuthorRouter";
 import {HireRouter} from "./routes/HireRouter";
 import {DebtRouter} from "./routes/DebtRouter";
+import {read} from "./utils/nokia-train";
 
 const app = express();
 
@@ -26,6 +27,9 @@ app.use('/author', AuthorRouter);
 app.use('/hire', HireRouter);
 app.use('/debt', DebtRouter);
 
+(async () => {
+    console.log(await read('./package.json'))
+})();
 
 app.listen(3001 || process.env.PORT, () => {
     console.log('App is running on http://localhost:3001');
